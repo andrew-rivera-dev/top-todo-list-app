@@ -55,15 +55,22 @@ html, body {
     overflow-y: auto;
 }
 
-.bi-plus-circle {
+#add-new-project {
     position: absolute;
     top: 72px;
     left: 280px;
     font-size: 28px;
 }
 
+#add-new-task {
+    position: absolute;
+    font-size: 40px;
+    right: 50px;
+}
+
 .bi-plus-circle:hover {
     color: #7289DA;
+    cursor: pointer;
 }
 
 .main {
@@ -71,6 +78,8 @@ html, body {
     padding: 80px;
     text-align: justify;
     overflow-y: auto;
+    box-shadow: inset;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
 }
 
 .all-projects {
@@ -88,4 +97,8 @@ html, body {
 .sidebar-element:hover, .sidebar-element:active {
     background-color: #7289DA;
     cursor: pointer;
+}
+
+.active {
+    background-color: #7289DA;
 }
