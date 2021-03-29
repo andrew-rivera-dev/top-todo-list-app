@@ -9,20 +9,35 @@ const projectDomManager = () => {
 
         Array.from(projects).forEach(elem => elem.classList.remove('active'));
 
+        //get text input
+
         const newProject = document.createElement('div');
-        newProject.innerHTML = 'test';
         newProject.classList.add('sidebar-element', 'active');
 
+        const newProjectText = document.createElement('input');
+        newProjectText.type = 'text';
+        newProjectText.maxLength = 12;
+        newProject.appendChild(newProjectText);
+
+        const confirmButton = document.createElement('i');
+        confirmButton.classList.add('bi-check', 'confirm-button');
+        newProject.appendChild(confirmButton);
+        
         sidebar.appendChild(newProject);
-    });
+    }, false);
 }
 
 
 const taskDomManger = () => {
-    const addNewProjectButton = document.getElementById('add-new-project');
+    const addNewTaskButton = document.getElementById('add-new-task');
 
-    addNewProjectButton.addEventListener('click', function() {
-        
+    addNewTaskButton.addEventListener('click', function() {
+        const main = document.getElementById('main');
+
+        const newTask = document.createElement('div');
+        newTask.innerHTML = 'New Task';
+        newTask.classList.add('task');
+        main.appendChild(newTask);
     });
 
 }

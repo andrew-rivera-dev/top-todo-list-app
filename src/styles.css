@@ -48,7 +48,6 @@ html, body {
 }
 
 .sidebar {
-    display: block;
     justify-content: center;
     grid-area: sidebar;
     padding: 20px;
@@ -86,11 +85,22 @@ html, body {
     margin-top: 0px;
 }
 
+input {
+    display: inline-block;
+    background-color: inherit;
+    width: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    outline: none;
+    border: none;
+}
+
 .sidebar-element {
     border-radius: 10px;
     padding: 5px;
     width: 70%;
-    margin: auto;
+    margin: 20px auto;
     height: fit-content;
     text-align: center;
 }
@@ -102,4 +112,21 @@ html, body {
 
 .active {
     background-color: #7289DA;
+}
+
+.confirm-button {
+    position: relative;
+    left: 10px;
+}
+
+.confirm-button:hover {
+    color: rgb(64, 224, 144);
+}
+
+.task {
+    background-color: #23272A;
+    padding: 10px;
+    border-top: grey;
+    border-radius: 10px;
+    margin: 10px;
 }
