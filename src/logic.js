@@ -1,33 +1,52 @@
-//import {projectFactory, taskFactory} from './object-factory'
-
-const projectList = () => {
-    const projects = [];
-
-    const add = (project) => {
-        projects.push(project)
+class Project {
+    constructor(name) {
+        this.name = name;
     }
 
-    const remove = (project) => {
-        projects.splice(projects.indexOf(project), 1);
-    }
+    setName(newName) {
+        this.name = newName;
+    }     
+}
 
-    const getProjects = () => {
-        return projects;
+class Task {
+    constructor (title, description, dueDate, priority, project) {
+        this.title = title;
+        this.description = description;
+        this.dueDate = dueDate;
+        this.priority = priority;
+        this.project = project;
     }
 }
 
-const taskList = () => {
-    const tasks = [];
-
-    const add = (task) => {
-        tasks.push(task)
+class Tracker {
+    constructor() {
+        this.items = [];
     }
 
-    const remove = (task) => {
-        tasks.splice(tasks.indexOf(task), 1);
+    add(item) {
+        this.items.push(item);
     }
 
-    const getTasks = () => {
-        return tasks;
+    remove(item) {
+        this.items.splice(this.items.indexOf(item), 1);
     }
+
+    getItems() {
+        return this.items;
+    }
+
+    sayHi() {
+        console.log('say hi');
+    }
+}
+
+let projectTracker = new Tracker();
+let taskTracker = new Tracker();
+
+export {
+    Project,
+    Task,
+    Tracker,
+    projectTracker,
+    taskTracker,
 }
