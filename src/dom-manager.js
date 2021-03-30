@@ -17,6 +17,8 @@ const projectDomManager = (() => {
     }, false);
 })()
 
+
+
 const createNewProjectDiv = () => {
     //create new project box as form
     const newProject = document.createElement('form');
@@ -61,6 +63,7 @@ const clearActiveProjects = () => {
     Array.from(projects).forEach(elem => elem.classList.remove('active'));
 }
 
+
 const taskDomManger = (() => {
     const addTaskButton = document.getElementById('add-new-task');
 
@@ -85,21 +88,20 @@ const taskDomManger = (() => {
         newTask.classList.add('task');
         main.appendChild(newTask);
     });
+
+    const closeFormButton = document.getElementById('btn-cancel');
+    closeFormButton.addEventListener('click', () => {
+        document.getElementById('task-form').style.display = 'none';
+
+        const children = document.body.children;
+
+        for (let i = 0; i < children.length; i++) {
+            if (children[i].classList.contains('blur-filter')) children[i].classList.remove('blur-filter');
+        }
+    });
 })()
-
-function closeForm() {
-    document.getElementById('task-form').style.display = 'none';
-
-    const children = document.body.children;
-
-    for (let i = 0; i < children.length; i++) {
-        if (children[i].classList.contains('blur-filter')) children[i].classList.remove('blur-filter');
-    }
-}
-
 
 export {
     projectDomManager, 
     taskDomManger,
-    closeForm,
 }
