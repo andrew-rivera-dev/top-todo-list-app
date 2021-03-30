@@ -83,14 +83,9 @@ const taskDomManger = (() => {
             if (children[i].id !== 'task-form') children[i].classList.add('blur-filter');
         }
 
-        const main = document.getElementById('main');
-        const coding = new Task('Write email to Jim', 'I need to write an email about something important. But more importantly, this is testing my task creator.', '03/10/21', 'Low', '', 'All Projects');
-        const newTask = createNewTaskDiv(coding);
-        main.appendChild(newTask);
     });
 
-    const closeFormButton = document.getElementById('btn-cancel');
-    closeFormButton.addEventListener('click', () => {
+    const closeForm = () => {
         document.getElementById('task-form').style.display = 'none';
 
         const children = document.body.children;
@@ -98,7 +93,25 @@ const taskDomManger = (() => {
         for (let i = 0; i < children.length; i++) {
             if (children[i].classList.contains('blur-filter')) children[i].classList.remove('blur-filter');
         }
-    });
+    }
+
+    const submitFormButton = document.getElementById('btn-create');
+    submitFormButton.addEventListener('click', () => {
+        const rawInputs = document.getElementsByClassName('form-info');
+        const inputs = Array.from(rawInputs).map(x => x.value);
+        const currentProject = document.getElementsByClassName('sidebar-element active');
+        const newTask = new Task(inputs[0], inputs[1], inputs[2], inputs[3], inputs[4], currentProject.innerHTML);
+        const newTaskDiv = createNewTaskDiv(newTask);
+
+        projectTracker.add(newTask);
+
+        const main = document.getElementById('main');
+        main.appendChild(newTaskDiv);
+        closeForm();
+    })
+
+    const closeFormButton = document.getElementById('btn-cancel');
+    closeFormButton.addEventListener('click',closeForm);
 })()
 
 const createNewTaskDiv = (task) => {
