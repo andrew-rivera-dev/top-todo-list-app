@@ -13,9 +13,8 @@ class Task {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
-        this.notes = notes || '';
         this.priority = priority;
-
+        this.notes = notes || '';
         this.project = project;
     }
 }

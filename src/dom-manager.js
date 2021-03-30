@@ -62,9 +62,23 @@ const clearActiveProjects = () => {
 }
 
 const taskDomManger = (() => {
-    const addNewTaskButton = document.getElementById('add-new-task');
+    const addTaskButton = document.getElementById('add-new-task');
 
-    addNewTaskButton.addEventListener('click', function() {
+    addTaskButton.addEventListener('click', function() {
+        const addTaskForm = document.getElementById('task-form');
+        addTaskForm.style.display = 'block';
+
+        document.getElementById('form-title').value = '';
+        document.getElementById('form-description').value = '';
+        document.getElementById('form-due-date').value = '';
+        document.getElementById('form-notes').value = '';
+
+        const children = document.body.children;
+
+        for (let i = 0; i < children.length; i++) {
+            if (children[i].id !== 'task-form') children[i].classList.add('blur-filter');
+        }
+
         const main = document.getElementById('main');
         const newTask = document.createElement('div');
         newTask.innerHTML = 'New Task';
@@ -73,7 +87,19 @@ const taskDomManger = (() => {
     });
 })()
 
+function closeForm() {
+    document.getElementById('task-form').style.display = 'none';
+
+    const children = document.body.children;
+
+    for (let i = 0; i < children.length; i++) {
+        if (children[i].classList.contains('blur-filter')) children[i].classList.remove('blur-filter');
+    }
+}
+
+
 export {
     projectDomManager, 
-    taskDomManger
+    taskDomManger,
+    closeForm,
 }

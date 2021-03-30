@@ -1,1 +1,1 @@
-import {projectDomManager, taskDomManger} from './dom-manager';
+import {projectDomManager, taskDomManger, closeForm} from './dom-manager';
