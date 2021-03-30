@@ -74,7 +74,7 @@ html, body {
 
 .main {
     grid-area: main;
-    padding: 80px;
+    padding: 80px 240px;
     text-align: justify;
     overflow-y: auto;
     box-shadow: inset;
@@ -135,6 +135,9 @@ input {
 }
 
 .task {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     background-color: #23272A;
     padding: 10px;
     border-top: grey;
@@ -147,6 +150,32 @@ input {
     background-color: #4d555a;
 }
 
+.task-property {
+    font-size: 20px;
+    margin: 0 20px;
+    
+}
+
+.task-title {
+    font-size: 30px;
+    flex: 5;
+}
+
+.task-description {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    flex: 10;
+}
+
+.task-due-date {
+    justify-self: flex-end;
+    flex: 1;
+}
+
+.task-priority {
+    flex: 1;
+}
 
 #task-form {
   display: none;

@@ -64,6 +64,7 @@ const clearActiveProjects = () => {
 }
 
 
+
 const taskDomManger = (() => {
     const addTaskButton = document.getElementById('add-new-task');
 
@@ -83,9 +84,8 @@ const taskDomManger = (() => {
         }
 
         const main = document.getElementById('main');
-        const newTask = document.createElement('div');
-        newTask.innerHTML = 'New Task';
-        newTask.classList.add('task');
+        const coding = new Task('Write email to Jim', 'I need to write an email about something important. But more importantly, this is testing my task creator.', '03/10/21', 'Low', '', 'All Projects');
+        const newTask = createNewTaskDiv(coding);
         main.appendChild(newTask);
     });
 
@@ -100,6 +100,46 @@ const taskDomManger = (() => {
         }
     });
 })()
+
+const createNewTaskDiv = (task) => {
+    const newTask = document.createElement('div');
+    newTask.classList.add('task');
+    
+    const title = document.createElement('span');
+    title.classList.add('task-title','task-property');
+    title.innerHTML = task.title;
+    newTask.appendChild(title);
+
+    const description = document.createElement('span');
+    description.classList.add('task-description', 'task-property');
+    description.innerHTML = task.description;
+    newTask.appendChild(description);
+
+    const dueDate = document.createElement('span');
+    dueDate.classList.add('task-due-date', 'task-property');
+    dueDate.innerHTML = task.dueDate;
+    newTask.appendChild(dueDate);
+    
+    const priority = document.createElement('span');
+    priority.classList.add('task-priority', 'task-property');
+    priority.innerHTML = task.priority;
+    switch(task.priority) {
+        case 'High':
+            priority.style.color = '#eb8f8f';
+            break;
+        case 'Medium':
+            priority.style.color = '#faedb1';
+            break;
+        case 'Low':
+            priority.style.color = '#a7fcd9';
+    }
+    newTask.appendChild(priority);
+
+
+    return newTask;
+}
+
+
 
 export {
     projectDomManager, 
