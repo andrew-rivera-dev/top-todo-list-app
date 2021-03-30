@@ -103,6 +103,7 @@ input {
     margin: 20px auto;
     height: fit-content;
     text-align: center;
+    transition: background-color 0.5s;
 }
 
 .sidebar-element:hover, .sidebar-element:active {
@@ -139,4 +140,8 @@ input {
     border-top: grey;
     border-radius: 10px;
     margin: 10px;
+}
+
+.task:hover {
+    background-color: #7289DA;
 }

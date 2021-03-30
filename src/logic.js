@@ -9,11 +9,13 @@ class Project {
 }
 
 class Task {
-    constructor (title, description, dueDate, priority, project) {
+    constructor (title, description, dueDate, priority, notes, project) {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
+        this.notes = notes || '';
         this.priority = priority;
+
         this.project = project;
     }
 }

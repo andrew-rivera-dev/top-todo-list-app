@@ -11,9 +11,9 @@ const projectDomManager = (() => {
     }, false);
 
     const allProjectsFolder = document.getElementById('all-projects');
-    allProjectsFolder.addEventListener('click', function(element) {
+    allProjectsFolder.addEventListener('click', function() {
         clearActiveProjects();
-        element.classList.add('active');
+        allProjectsFolder.classList.add('active');
     }, false);
 })()
 
@@ -48,6 +48,11 @@ const createNewProjectDiv = () => {
 
     newProject.appendChild(confirmButton);
 
+    newProject.addEventListener('click', function() {
+        clearActiveProjects();
+        newProject.classList.add('active');
+    }, false);
+
     return newProject;
 }
 
@@ -61,7 +66,6 @@ const taskDomManger = (() => {
 
     addNewTaskButton.addEventListener('click', function() {
         const main = document.getElementById('main');
-
         const newTask = document.createElement('div');
         newTask.innerHTML = 'New Task';
         newTask.classList.add('task');
