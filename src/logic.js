@@ -34,10 +34,6 @@ class Tracker {
     getItems() {
         return this.items;
     }
-
-    sayHi() {
-        console.log('say hi');
-    }
 }
 
 let projectTracker = new Tracker();

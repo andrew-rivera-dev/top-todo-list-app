@@ -117,10 +117,20 @@ input {
 .confirm-button {
     position: relative;
     left: 10px;
+    background-color: transparent;
+    border: none;
+    outline: none;
 }
 
-.confirm-button:hover {
+
+.bi-check {
+    font-size: 30px;
+    color: white;
+}
+
+.bi-check:hover {
     color: rgb(64, 224, 144);
+    cursor: pointer;
 }
 
 .task {

@@ -1,41 +1,59 @@
-import { Project } from './logic';
-import {projectTracker, taskTracker} from './logic'
+import {Project, Task, projectTracker, taskTracker} from './logic';
 
 const projectDomManager = (() => {
     const addNewProjectButton = document.getElementById('add-new-project');
 
     addNewProjectButton.addEventListener('click', function() {
         const sidebar = document.getElementById('sidebar');
-        const projects = document.getElementsByClassName('sidebar-element');
-
-        Array.from(projects).forEach(elem => elem.classList.remove('active'));
-
+        clearActiveProjects();
         const newProject = createNewProjectDiv();
-        sidebar.appendChild(newProject);
+         sidebar.appendChild(newProject);
+    }, false);
+
+    const allProjectsFolder = document.getElementById('all-projects');
+    allProjectsFolder.addEventListener('click', function(element) {
+        clearActiveProjects();
+        element.classList.add('active');
     }, false);
 })()
 
 const createNewProjectDiv = () => {
-    const newProject = document.createElement('div');
-    newProject.classList.add('sidebar-element', 'active');
+    //create new project box as form
+    const newProject = document.createElement('form');
+    newProject.classList.add('sidebar-element', 'created-sidebar-element', 'active');
 
+    //add text input
     const newProjectText = document.createElement('input');
     newProjectText.type = 'text';
     newProjectText.maxLength = 12;
+    newProjectText.required = true;
     newProject.appendChild(newProjectText);
 
-    const confirmButton = document.createElement('i');
-    confirmButton.classList.add('bi-check', 'confirm-button');
+    //add confirm button
+    const confirmButton = document.createElement('button');
+    confirmButton.type = 'submit';
+    confirmButton.classList.add('confirm-button');
 
-    confirmButton.addEventListener('click', function() {
+    //add check icon to button
+    const checkIcon = document.createElement('i');
+    checkIcon.classList.add('bi-check');
+    confirmButton.appendChild(checkIcon);
+
+    newProject.addEventListener('submit', function(event) {
         let text = newProjectText.value;
         projectTracker.add(new Project(text));
         newProject.innerHTML = text;
+        event.preventDefault();
     }, false);
 
     newProject.appendChild(confirmButton);
 
     return newProject;
+}
+
+const clearActiveProjects = () => {
+    const projects = document.getElementsByClassName('sidebar-element');
+    Array.from(projects).forEach(elem => elem.classList.remove('active'));
 }
 
 const taskDomManger = (() => {
