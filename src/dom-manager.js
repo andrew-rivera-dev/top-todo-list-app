@@ -1,48 +1,57 @@
 import {Project, Task, projectTracker, taskTracker} from './logic';
 
-const projectDomManager = (() => {
-    const addNewProjectButton = document.getElementById('add-new-project');
-
-    addNewProjectButton.addEventListener('click', function() {
+function projectDomManager() {
+    function pushNewProjectToSidebar() {
         const sidebar = document.getElementById('sidebar');
         clearActiveProjects();
         const newProject = createNewProjectDiv();
-         sidebar.appendChild(newProject);
-    }, false);
+        sidebar.appendChild(newProject);
+        newProject.firstElementChild.focus();
+    }
+    
+    const addNewProjectButton = document.getElementById('add-new-project');
+    addNewProjectButton.addEventListener('click', pushNewProjectToSidebar, false);
 
     const allProjectsFolder = document.getElementById('all-projects');
     allProjectsFolder.addEventListener('click', function() {
         clearActiveProjects();
         allProjectsFolder.classList.add('active');
     }, false);
-})()
+}
 
 
 
-const createNewProjectDiv = () => {
-    //create new project box as form
+function createNewProjectDiv() { 
     const newProject = document.createElement('form');
     newProject.classList.add('sidebar-element', 'created-sidebar-element', 'active');
 
-    //add text input
     const newProjectText = document.createElement('input');
     newProjectText.type = 'text';
     newProjectText.maxLength = 12;
-    newProjectText.required = true;
     newProject.appendChild(newProjectText);
 
-    //add confirm button
     const confirmButton = document.createElement('button');
     confirmButton.type = 'submit';
     confirmButton.classList.add('confirm-button');
 
-    //add check icon to button
     const checkIcon = document.createElement('i');
     checkIcon.classList.add('bi-check');
     confirmButton.appendChild(checkIcon);
 
+    function deleteSelf() {
+        this.parentNode.removeChild(this);
+    }
+
+    // newProject.addEventListener('focusout', deleteSelf, false)
+    // newProjectText.addEventListener('focusout', deleteSelf, false);
+
     newProject.addEventListener('submit', function(event) {
-        let text = newProjectText.value;
+        // newProject.removeEventListener('focusout', deleteSelf, false);
+        // newProjectText.removeEventListener('focusout', deleteSelf, false);
+        
+        const text = newProjectText.value;
+        if (text === '') return;
+
         projectTracker.add(new Project(text));
         newProject.innerHTML = text;
         event.preventDefault();
@@ -58,14 +67,14 @@ const createNewProjectDiv = () => {
     return newProject;
 }
 
-const clearActiveProjects = () => {
+function clearActiveProjects() {
     const projects = document.getElementsByClassName('sidebar-element');
     Array.from(projects).forEach(elem => elem.classList.remove('active'));
 }
 
 
 
-const taskDomManger = (() => {
+function taskDomManger() {
     const addTaskButton = document.getElementById('add-new-task');
 
     addTaskButton.addEventListener('click', function() {
@@ -85,7 +94,7 @@ const taskDomManger = (() => {
 
     });
 
-    const closeForm = () => {
+    function closeForm() {
         document.getElementById('task-form').style.display = 'none';
 
         const children = document.body.children;
@@ -112,9 +121,9 @@ const taskDomManger = (() => {
 
     const closeFormButton = document.getElementById('btn-cancel');
     closeFormButton.addEventListener('click',closeForm);
-})()
+}
 
-const createNewTaskDiv = (task) => {
+function createNewTaskDiv(task) {
     const newTask = document.createElement('div');
     newTask.classList.add('task');
     
@@ -147,7 +156,6 @@ const createNewTaskDiv = (task) => {
             priority.style.color = '#a7fcd9';
     }
     newTask.appendChild(priority);
-
 
     return newTask;
 }
