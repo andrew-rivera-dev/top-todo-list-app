@@ -37,13 +37,8 @@ class Tracker {
     }
 }
 
-let projectTracker = new Tracker();
-let taskTracker = new Tracker();
-
 export {
     Project,
     Task,
     Tracker,
-    projectTracker,
-    taskTracker,
 }

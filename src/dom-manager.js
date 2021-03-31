@@ -1,12 +1,19 @@
-import {Project, Task, projectTracker, taskTracker} from './logic';
+import {Project, Task, Tracker} from './logic';
+
+let projectTracker = new Tracker();
+let taskTracker = new Tracker();
 
 function projectDomManager() {
     function pushNewProjectToSidebar() {
         const sidebar = document.getElementById('sidebar');
         clearActiveProjects();
-        const newProject = createNewProjectDiv();
+        
+        const newProject = createProjectDiv();
         sidebar.appendChild(newProject);
-        newProject.firstElementChild.focus();
+
+        const textBox = newProject.firstElementChild; 
+        textBox.focus();
+        renderProjectTasks();
     }
     
     const addNewProjectButton = document.getElementById('add-new-project');
@@ -16,12 +23,36 @@ function projectDomManager() {
     allProjectsFolder.addEventListener('click', function() {
         clearActiveProjects();
         allProjectsFolder.classList.add('active');
+        renderAllTasks();
     }, false);
+
 }
 
+function renderAllTasks() {
+    const allTasks = document.getElementsByClassName('task');
 
+    for (let i = 0; i < allTasks.length; i++) {
+        allTasks[i].style.display = 'flex';
+    }
+}
 
-function createNewProjectDiv() { 
+function renderProjectTasks() {
+    let clickedProject = document.getElementsByClassName('sidebar-element active')[0].innerHTML;
+    const allTaskDivs = document.getElementsByClassName('task');
+    let allTaskObjects = taskTracker.getItems();
+
+    for (let i = 0; i < allTaskDivs.length; i++) {
+        const taskDivTitle = allTaskDivs[i].firstChild.innerHTML;
+        const matchingTaskObject = allTaskObjects.filter(taskObject => taskObject['title'] === taskDivTitle);
+        if (matchingTaskObject[0]['project'] !== clickedProject) {
+            allTaskDivs[i].style.display = 'none';
+        } else {
+            allTaskDivs[i].style.display = 'flex';
+        }
+    }
+}
+
+function createProjectDiv() { 
     const newProject = document.createElement('form');
     newProject.classList.add('sidebar-element', 'created-sidebar-element', 'active');
 
@@ -38,6 +69,8 @@ function createNewProjectDiv() {
     checkIcon.classList.add('bi-check');
     confirmButton.appendChild(checkIcon);
 
+    newProject.appendChild(confirmButton);
+
     function cancelProjectCreate() {
         const sidebar = document.getElementById('sidebar');
         const textBoxParent = this.parentNode; 
@@ -47,23 +80,23 @@ function createNewProjectDiv() {
     newProjectText.addEventListener('focusout', cancelProjectCreate, false);
 
     newProject.addEventListener('submit', function(event) {
+        event.preventDefault();
+
         newProjectText.removeEventListener('focusout', cancelProjectCreate, false);
         
         const text = newProjectText.value;
         if (text === '') return;
 
         projectTracker.add(new Project(text));
-        newProject.innerHTML = text;
-        event.preventDefault();
+        this.innerHTML = text; 
+        newProject.addEventListener('click', function() {
+            clearActiveProjects();
+            newProject.classList.add('active');
+            renderProjectTasks();
+        }, false);
+
     }, false);
-
-    newProject.appendChild(confirmButton);
-
-    newProject.addEventListener('click', function() {
-        clearActiveProjects();
-        newProject.classList.add('active');
-    }, false);
-
+    
     return newProject;
 }
 
@@ -105,14 +138,17 @@ function taskDomManger() {
     }
 
     const submitFormButton = document.getElementById('btn-create');
-    submitFormButton.addEventListener('click', () => {
+    submitFormButton.addEventListener('click', function() {
         const rawInputs = document.getElementsByClassName('form-info');
         const inputs = Array.from(rawInputs).map(x => x.value);
+        inputs.pop();
+        if (inputs.some(x => x === '')) return;
+        
         const currentProject = document.getElementsByClassName('sidebar-element active');
-        const newTask = new Task(inputs[0], inputs[1], inputs[2], inputs[3], inputs[4], currentProject.innerHTML);
+        const newTask = new Task(inputs[0], inputs[1], inputs[2], inputs[3], inputs[4], currentProject[0].innerHTML);
         const newTaskDiv = createNewTaskDiv(newTask);
 
-        projectTracker.add(newTask);
+        taskTracker.add(newTask);
 
         const main = document.getElementById('main');
         main.appendChild(newTaskDiv);
