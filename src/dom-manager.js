@@ -38,16 +38,16 @@ function createNewProjectDiv() {
     checkIcon.classList.add('bi-check');
     confirmButton.appendChild(checkIcon);
 
-    function deleteSelf() {
-        this.parentNode.removeChild(this);
+    function cancelProjectCreate() {
+        const sidebar = document.getElementById('sidebar');
+        const textBoxParent = this.parentNode; 
+        if (this.value === '') sidebar.removeChild(textBoxParent);
     }
 
-    // newProject.addEventListener('focusout', deleteSelf, false)
-    // newProjectText.addEventListener('focusout', deleteSelf, false);
+    newProjectText.addEventListener('focusout', cancelProjectCreate, false);
 
     newProject.addEventListener('submit', function(event) {
-        // newProject.removeEventListener('focusout', deleteSelf, false);
-        // newProjectText.removeEventListener('focusout', deleteSelf, false);
+        newProjectText.removeEventListener('focusout', cancelProjectCreate, false);
         
         const text = newProjectText.value;
         if (text === '') return;
