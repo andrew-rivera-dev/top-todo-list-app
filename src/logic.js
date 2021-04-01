@@ -1,35 +1,40 @@
+import {v4 as uuidv4} from 'uuid';
+
 class Project {
     constructor(name) {
         this.name = name;
+        this.id = `project_${uuidv4()}`;
+        this.tasks = [];
     }
-
-    setName(newName) {
-        this.name = newName;
-    }     
+    
+    addTask(task) {
+        this.tasks.push(task);
+    }
 }
 
 class Task {
-    constructor (title, description, dueDate, priority, notes, project) {
+    constructor (title, description, dueDate, priority, project, notes = '') {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
-        this.notes = notes || '';
         this.project = project;
+        this.id = `task_${uuidv4}`;
+        this.notes = notes;
     }
 }
 
 class Tracker {
     constructor() {
-        this.items = [];
+        this.items = {};
     }
 
-    add(item) {
-        this.items.push(item);
+    add(key, value) {
+        this.items[key] = value;
     }
 
-    remove(item) {
-        this.items.splice(this.items.indexOf(item), 1);
+    remove(key) {
+        delete this.items[key];
     }
 
     getItems() {

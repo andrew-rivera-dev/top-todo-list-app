@@ -14,10 +14,9 @@ function projectDomManager() {
         const textBox = newProject.firstElementChild; 
         textBox.focus();
 
-        renderProjectTasks();
     }
     
-    const addNewProjectButton = document.getElementById('add-new-project');
+    const addNewProjectButton = document.getElementById('add-project-icon');
     addNewProjectButton.addEventListener('click', pushNewProjectToSidebar, false);
 
     const allProjectsFolder = document.getElementById('all-projects');
@@ -25,6 +24,25 @@ function projectDomManager() {
         clearActiveProject();
         allProjectsFolder.classList.add('active');
         renderAllTasks();
+    }, false);
+}
+
+function assignProjectEditEventListeners() {
+    const allEditButtons = document.getElementsByClassName('project-edit-button');
+    Array.from(allEditButtons).forEach(button => {
+        button.addEventListener('click', () => {
+            const originalProjectDiv = button.parentNode;
+            const aboveProjectDiv = originalProjectDiv.previousSibling;
+            const sidebar = document.getElementById('sidebar');
+            sidebar.removeChild(originalProjectDiv);
+
+            if (aboveProjectDiv.nextSibling === null) {
+                sidebar.appendChild(createProjectDiv());
+            } else {
+                sidebar.insertBefore(createProjectDiv(), 
+                                     aboveProjectDiv.nextSibling);
+            }
+        });
     }, false);
 }
 
@@ -37,7 +55,9 @@ function renderAllTasks() {
 }
 
 function renderProjectTasks() {
-    let clickedProject = document.getElementsByClassName('sidebar-element active')[0].innerHTML;
+    let clickedProject = document.getElementsByClassName('sidebar-element active')[0] ?
+                         document.getElementsByClassName('sidebar-element active')[0].innerHTML:
+                         '';
     const allTaskDivs = document.getElementsByClassName('task');
     let allTaskObjects = taskTracker.getItems();
 
@@ -71,34 +91,34 @@ function createProjectDiv() {
 
     newProject.appendChild(confirmButton);
 
-
+    const sidebar = document.getElementById('sidebar');
     function cancelProjectCreate() {
-        const sidebar = document.getElementById('sidebar');
         const textBoxParent = this.parentNode; 
-        if (this.value === '') sidebar.removeChild(textBoxParent);
+        sidebar.removeChild(textBoxParent);
     }
 
-    newProjectText.addEventListener('focusout', cancelProjectCreate, false);
+    newProject.addEventListener('focusout', cancelProjectCreate, false);
 
     newProject.addEventListener('submit', function(event) {
+        newProject.removeEventListener('focusout', cancelProjectCreate, false);
+        
         event.preventDefault();
         
         const text = newProjectText.value;
         if (text === '') return;
 
         projectTracker.add(new Project(text));
-
-        newProjectText.removeEventListener('focusout', cancelProjectCreate, false);
         
         newProject.innerHTML = ''; 
 
-        const editButton = document.createElement('button');
-        editButton.type = 'button';
-        editButton.classList.add('project-edit-button');
+        // const editButton = document.createElement('button');
+        // editButton.type = 'button';
+        // editButton.title = 'Edit project';
+        // editButton.classList.add('project-edit-button');
 
-        const editIcon = document.createElement('i');
-        editIcon.classList.add('bi-pencil-square', 'project-edit-icon');
-        editButton.appendChild(editIcon);
+        // const editIcon = document.createElement('i');
+        // editIcon.classList.add('bi-pencil-square', 'project-edit-icon');
+        // editButton.appendChild(editIcon);
 
         const projectTextDiv = document.createElement('div');
         projectTextDiv.innerHTML = text;
@@ -106,13 +126,28 @@ function createProjectDiv() {
 
         const deleteButton = document.createElement('button');
         deleteButton.type = 'button';
+        deleteButton.title = 'Delete project';
         deleteButton.classList.add('project-delete-button');
 
         const deleteIcon = document.createElement('i');
         deleteIcon.classList.add('bi-x-circle-fill', 'project-delete-icon');
         deleteButton.appendChild(deleteIcon);
 
-        newProject.appendChild(editButton);
+        deleteButton.addEventListener('click', () => {
+            const projectName = deleteButton.previousSibling.innerHTML;
+            const allTaskObjects = taskTracker.getItems();
+
+            for (let i = 0; i < allTaskObjects.length; i++) {
+                if (allTaskObjects[i]['project'] === projectName) {
+                    allTaskObjects[i]['project'] = 'All Projects';
+                }
+            }
+            
+            sidebar.removeChild(deleteButton.parentNode);
+
+        });
+
+        // newProject.appendChild(editButton);
         newProject.appendChild(projectTextDiv);
         newProject.appendChild(deleteButton);
 
@@ -123,6 +158,9 @@ function createProjectDiv() {
             renderProjectTasks();
         }, false);
 
+        clearActiveProject();
+        newProject.classList.add('active');
+        renderProjectTasks();
     }, false);
     
     return newProject;
@@ -148,7 +186,7 @@ function hideProjectButtons(project) {
 }
 
 function taskDomManger() {
-    const addTaskButton = document.getElementById('add-new-task');
+    const addTaskButton = document.getElementById('add-task');
 
     addTaskButton.addEventListener('click', function() {
         const addTaskForm = document.getElementById('task-form');

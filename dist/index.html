@@ -15,15 +15,19 @@
             <div class="name title-element">ToDay</div>
         </div>
         <div class="toolbar">
-            <i id="add-new-task" class="bi bi-plus-circle" title="Add new task"></i>
+            <i id="add-task" class="bi-plus-circle" title="Add new task"></i>
         </div>
         <div id="sidebar" class="sidebar">
-            <i id="add-new-project" class="bi bi-plus-circle" title="Add new project"></i>
-            <div id="all-projects" class="sidebar-element active">All Projects</div>
+          <form id="add-project-form" onsubmit="return false">
+            <input id="add-project-input" type="text" placeholder="Enter new project name" maxlength="20" required>
+            <button id="add-project-button" type="submit">
+              <i id="add-project-icon" class="bi-plus-circle" title="Add new project"></i>
+            </button> 
+          </form>
+          
+          <div id="all-projects-default" class="sidebar-element project-folder active">All Projects</div>
         </div>
-        <div id="main" class="main">
-            
-        </div>
+        <div id="main" class="main"></div>
     </div>
 
     <form id="task-form" class="task-form" onsubmit="return false">

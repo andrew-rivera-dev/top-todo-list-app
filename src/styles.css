@@ -54,22 +54,37 @@ html, body {
     overflow-y: auto;
 }
 
-#add-new-project {
-    position: absolute;
-    top: 72px;
-    left: 280px;
+#add-project-form {
+    display: flex;
+}
+
+#add-project-input {
+    font-size: 16px;
+    border-bottom: 1px solid white;
+    width: 80%;
+}
+
+#add-project-button {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    margin-left: 20px;
+}
+
+#add-project-icon {
+    color: white;
     font-size: 28px;
 }
 
-#add-new-task {
+#add-project-icon:hover, #add-task:hover {
+    color: #7289DA;
+    cursor: pointer;
+}
+
+#add-task {
     position: absolute;
     font-size: 40px;
     right: 50px;
-}
-
-.bi-plus-circle:hover {
-    color: #7289DA;
-    cursor: pointer;
 }
 
 .main {
@@ -121,7 +136,7 @@ input {
 
 .project-text {
     width: 100%;
-    text-align: left;
+    text-align: center;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
@@ -146,7 +161,7 @@ input {
     cursor: pointer;
 }
 
-.project-edit-button {
+/* .project-edit-button {
     display: inline;
     position: relative;
     right: 3px;
@@ -154,9 +169,9 @@ input {
     background-color: transparent;
     outline: none;
     border: none;
-}
+} */
 
-.project-edit-icon, .project-delete-icon {
+.project-delete-icon {
     color: white;
     font-size: 16px;
 }
@@ -164,6 +179,8 @@ input {
 .project-delete-button {
     background-color: transparent;
     border: none;
+    outline: none;
+    cursor: pointer;
 }
 
 .task {
@@ -221,7 +238,7 @@ input {
   font-size: 26px;
   filter: 0px;
   max-width: 500px;
-  max-height: 1000px;
+  max-height: 800px;
   padding: 10px;
   background-color: #2c2f33;
 }
@@ -230,6 +247,7 @@ input {
     font-size: 56px;
     justify-content: center;
     padding: 0px;
+    margin: 20px;
     text-align: center;
 }
 

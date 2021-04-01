@@ -1,4 +1,4 @@
-import {projectDomManager, taskDomManger} from './dom-manager';
+import {projectManager} from './project-manager';
+// import {taskManager} from './task-manager';
 
-projectDomManager();
-taskDomManger();
+projectManager();
