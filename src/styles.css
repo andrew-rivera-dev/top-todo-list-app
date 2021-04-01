@@ -99,7 +99,7 @@ input {
 .sidebar-element {
     border-radius: 10px;
     padding: 5px;
-    width: 70%;
+    width: 80%;
     margin: 20px auto;
     height: fit-content;
     text-align: center;
@@ -115,6 +115,19 @@ input {
     background-color: #7289DA;
 }
 
+.created-sidebar-element {
+    display: flex;
+}
+
+.project-text {
+    width: 100%;
+    text-align: left;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    padding-left: 10px;
+}
+
 .confirm-button {
     position: relative;
     left: 10px;
@@ -122,7 +135,6 @@ input {
     border: none;
     outline: none;
 }
-
 
 .bi-check {
     font-size: 30px;
@@ -132,6 +144,21 @@ input {
 .bi-check:hover {
     color: rgb(64, 224, 144);
     cursor: pointer;
+}
+
+.project-edit-button {
+    display: inline;
+    position: relative;
+    right: 3px;
+    top: 1px;
+    background-color: transparent;
+    outline: none;
+    border: none;
+}
+
+.project-edit-icon {
+    color: white;
+    font-size: 16px;
 }
 
 .task {

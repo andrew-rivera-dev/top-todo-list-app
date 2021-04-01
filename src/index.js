@@ -1,5 +1,4 @@
-import {projectDomManager, taskDomManger, closeForm} from './dom-manager';
-import taskTracker from './logic';
+import {projectDomManager, taskDomManger} from './dom-manager';
 
 projectDomManager();
 taskDomManger();

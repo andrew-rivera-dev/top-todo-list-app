@@ -71,6 +71,7 @@ function createProjectDiv() {
 
     newProject.appendChild(confirmButton);
 
+
     function cancelProjectCreate() {
         const sidebar = document.getElementById('sidebar');
         const textBoxParent = this.parentNode; 
@@ -81,17 +82,35 @@ function createProjectDiv() {
 
     newProject.addEventListener('submit', function(event) {
         event.preventDefault();
-
-        newProjectText.removeEventListener('focusout', cancelProjectCreate, false);
         
         const text = newProjectText.value;
         if (text === '') return;
 
         projectTracker.add(new Project(text));
-        this.innerHTML = text; 
+
+        newProjectText.removeEventListener('focusout', cancelProjectCreate, false);
+        
+        newProject.innerHTML = ''; 
+
+        const projectTextDiv = document.createElement('div');
+        projectTextDiv.innerHTML = text;
+        projectTextDiv.classList.add('project-text');
+
+        const editButton = document.createElement('button');
+        editButton.type = 'button';
+        editButton.classList.add('project-edit-button');
+
+        const editIcon = document.createElement('i');
+        editIcon.classList.add('bi-pencil-square', 'project-edit-icon');
+        editButton.appendChild(editIcon);
+
+        newProject.appendChild(editButton);
+        newProject.appendChild(projectTextDiv);
+
         newProject.addEventListener('click', function() {
             clearActiveProjects();
             newProject.classList.add('active');
+            renderProjectChildren(newProject);
             renderProjectTasks();
         }, false);
 
@@ -102,10 +121,22 @@ function createProjectDiv() {
 
 function clearActiveProjects() {
     const projects = document.getElementsByClassName('sidebar-element');
-    Array.from(projects).forEach(elem => elem.classList.remove('active'));
+    Array.from(projects).forEach(project => {
+        project.classList.remove('active');
+        hideProjectButtons(project);
+    });
 }
 
+function renderProjectChildren(project) {
+    Array.from(project.children).forEach(child => child.style.visibility = 'visible');
+}
 
+function hideProjectButtons(project) {
+    let projectChildren = project.children;
+    Array.from(projectChildren).forEach(function(child) {
+        if (child.tagName === 'BUTTON') child.style.visibility = 'hidden';
+    });
+}
 
 function taskDomManger() {
     const addTaskButton = document.getElementById('add-new-task');
