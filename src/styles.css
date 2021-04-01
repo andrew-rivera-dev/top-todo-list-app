@@ -103,7 +103,7 @@ input {
     margin: 20px auto;
     height: fit-content;
     text-align: center;
-    transition: background-color 0.5s;
+    transition: background-color 0.2s;
 }
 
 .sidebar-element:hover {
@@ -156,9 +156,14 @@ input {
     border: none;
 }
 
-.project-edit-icon {
+.project-edit-icon, .project-delete-icon {
     color: white;
     font-size: 16px;
+}
+
+.project-delete-button {
+    background-color: transparent;
+    border: none;
 }
 
 .task {
@@ -170,7 +175,7 @@ input {
     border-top: grey;
     border-radius: 10px;
     margin: 10px;
-    transition: background-color 0.5s;
+    transition: background-color 0.2s;
 }
 
 .task:hover {

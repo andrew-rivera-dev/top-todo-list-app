@@ -5,14 +5,15 @@ let taskTracker = new Tracker();
 
 function projectDomManager() {
     function pushNewProjectToSidebar() {
+        clearActiveProject();
+
         const sidebar = document.getElementById('sidebar');
-        clearActiveProjects();
-        
         const newProject = createProjectDiv();
         sidebar.appendChild(newProject);
 
         const textBox = newProject.firstElementChild; 
         textBox.focus();
+
         renderProjectTasks();
     }
     
@@ -21,11 +22,10 @@ function projectDomManager() {
 
     const allProjectsFolder = document.getElementById('all-projects');
     allProjectsFolder.addEventListener('click', function() {
-        clearActiveProjects();
+        clearActiveProject();
         allProjectsFolder.classList.add('active');
         renderAllTasks();
     }, false);
-
 }
 
 function renderAllTasks() {
@@ -92,10 +92,6 @@ function createProjectDiv() {
         
         newProject.innerHTML = ''; 
 
-        const projectTextDiv = document.createElement('div');
-        projectTextDiv.innerHTML = text;
-        projectTextDiv.classList.add('project-text');
-
         const editButton = document.createElement('button');
         editButton.type = 'button';
         editButton.classList.add('project-edit-button');
@@ -104,11 +100,24 @@ function createProjectDiv() {
         editIcon.classList.add('bi-pencil-square', 'project-edit-icon');
         editButton.appendChild(editIcon);
 
+        const projectTextDiv = document.createElement('div');
+        projectTextDiv.innerHTML = text;
+        projectTextDiv.classList.add('project-text');
+
+        const deleteButton = document.createElement('button');
+        deleteButton.type = 'button';
+        deleteButton.classList.add('project-delete-button');
+
+        const deleteIcon = document.createElement('i');
+        deleteIcon.classList.add('bi-x-circle-fill', 'project-delete-icon');
+        deleteButton.appendChild(deleteIcon);
+
         newProject.appendChild(editButton);
         newProject.appendChild(projectTextDiv);
+        newProject.appendChild(deleteButton);
 
         newProject.addEventListener('click', function() {
-            clearActiveProjects();
+            clearActiveProject();
             newProject.classList.add('active');
             renderProjectChildren(newProject);
             renderProjectTasks();
@@ -119,7 +128,7 @@ function createProjectDiv() {
     return newProject;
 }
 
-function clearActiveProjects() {
+function clearActiveProject() {
     const projects = document.getElementsByClassName('sidebar-element');
     Array.from(projects).forEach(project => {
         project.classList.remove('active');
