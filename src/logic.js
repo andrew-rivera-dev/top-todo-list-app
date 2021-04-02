@@ -4,11 +4,11 @@ class Project {
     constructor(name) {
         this.name = name;
         this.id = `project_${uuidv4()}`;
-        this.tasks = [];
+        this.tasks = {};
     }
     
-    addTask(task) {
-        this.tasks.push(task);
+    addTask(key, value) {
+        this.tasks[key] = value;
     }
 }
 

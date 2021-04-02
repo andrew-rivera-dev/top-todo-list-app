@@ -158,7 +158,7 @@ function taskManager() {
 
         //Add task object to project object
         const projectObject = projectDictionary.getItem(currentProject[0].id);
-        projectObject.addTask(newTaskObject)
+        projectObject.addTask(newTaskObject.id, newTaskObject)
         
         //Create task element
         //const newTaskDiv = createNewTaskDiv(newTask);
