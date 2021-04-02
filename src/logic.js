@@ -13,13 +13,13 @@ class Project {
 }
 
 class Task {
-    constructor (title, description, dueDate, priority, project, notes = '') {
+    constructor (title, description, dueDate, priority, projectId, notes = '') {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
-        this.project = project;
-        this.id = `task_${uuidv4}`;
+        this.projectId = projectId;
+        this.id = `task_${uuidv4()}`;
         this.notes = notes;
     }
 }
@@ -35,6 +35,10 @@ class Tracker {
 
     remove(key) {
         delete this.items[key];
+    }
+
+    getItem(id) {
+        return this.items[`${id}`];
     }
 
     getItems() {

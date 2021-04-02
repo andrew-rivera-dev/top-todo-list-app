@@ -96,10 +96,6 @@ html, body {
     box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
 }
 
-.all-projects {
-    margin-top: 0px;
-}
-
 input {
     display: inline-block;
     background-color: inherit;
@@ -130,6 +126,11 @@ input {
     background-color: #7289DA;
 }
 
+.project-folder {
+    display: flex;
+    justify-content: center;
+}
+
 .project-text {
     width: 100%;
     text-align: center;
@@ -137,24 +138,6 @@ input {
     overflow: hidden;
     white-space: nowrap;
     padding-left: 10px;
-}
-
-.confirm-button {
-    position: relative;
-    left: 10px;
-    background-color: transparent;
-    border: none;
-    outline: none;
-}
-
-.bi-check {
-    font-size: 30px;
-    color: white;
-}
-
-.bi-check:hover {
-    color: rgb(64, 224, 144);
-    cursor: pointer;
 }
 
 /* .project-edit-button {
@@ -173,9 +156,9 @@ input {
 }
 
 .project-delete-button {
-    position: relative;
-    left: 80px;
-    bottom: 4px;
+    /* position: relative;
+    left: 20px;
+    bottom: 4px; */
     background-color: transparent;
     border: none;
     outline: none;
