@@ -1,4 +1,5 @@
 import {Project, Task, Tracker} from './logic.js';
+import {format} from 'date-fns';
 
 let projectDictionary = new Tracker();
 let allProjects = new Project('All Projects');
@@ -162,7 +163,9 @@ function taskManager() {
     });
 
     const submitFormButton = document.getElementById('btn-create');
-    submitFormButton.addEventListener('click', function() {
+    submitFormButton.addEventListener('click', submitForm, false);
+    
+    function submitForm() {
         const rawInputs = document.getElementsByClassName('form-info');
         const inputs = Array.from(rawInputs).map(x => x.value);
         inputs.pop();
@@ -172,7 +175,8 @@ function taskManager() {
         const currentProject = document.getElementsByClassName('sidebar-element active');
         
         //Store data in task object
-        const newTaskObject = new Task(inputs[0], inputs[1], inputs[2], inputs[3], currentProject[0].id, inputs[4]);
+        const dueDateSplit = inputs[2].split('-');
+        const newTaskObject = new Task(inputs[0], inputs[1], format(new Date(dueDateSplit[0], dueDateSplit[1], dueDateSplit[2]), 'MMM do'), inputs[3], currentProject[0].id, inputs[4]);
 
         //Add task object to project object
         const projectObject = projectDictionary.getItem(currentProject[0].id);
@@ -185,7 +189,7 @@ function taskManager() {
         const main = document.getElementById('main');
         main.appendChild(newTaskObject.element);
         closeForm();
-    })
+    }
 
     const closeFormButton = document.getElementById('btn-cancel');
     closeFormButton.addEventListener('click',closeForm)
@@ -256,8 +260,25 @@ function taskManager() {
         const editIcon = document.createElement('i');
         editIcon.id = `taskEditIcon_${numericId}`;
         editIcon.classList.add('bi-pencil-square', 'task-edit-icon');
-
         editButton.appendChild(editIcon);
+
+        editButton.addEventListener('click', function() {
+            const addTaskForm = document.getElementById('task-form');
+            const formHeader = document.getElementById('form-header');
+
+            formHeader.innerHTML = 'Update task';
+            addTaskForm.style.display = 'block';
+            
+            document.getElementById('form-title').value = taskObject.title;
+            document.getElementById('form-description').value = taskObject.description;
+            document.getElementById('form-due-date').value = taskObject.dueDate;
+            document.getElementById('form-notes').value = taskObject.notes;
+
+            const submitFormButton = document.getElementById('btn-create');
+            submitFormButton.removeEventListener('click', submitForm, false);
+            submitFormButton.addEventListener('click', updateTask, false);
+        })
+
         newTaskElement.appendChild(editButton);
 
         const deleteButton = document.createElement('button');
@@ -269,8 +290,17 @@ function taskManager() {
         const deleteIcon = document.createElement('i');
         deleteIcon.id = `taskDeleteIcon_${numericId}`;
         deleteIcon.classList.add('bi-x-circle-fill', 'task-delete-icon');
-
         deleteButton.appendChild(deleteIcon);
+
+        deleteButton.addEventListener('click', function() {
+            const parentTask = document.getElementById(taskObject.id);
+            const projectObject = projectDictionary.getItem(taskObject.projectId);
+            projectObject.removeTask(taskObject.id);
+
+            const main = document.getElementById('main');
+            main.removeChild(parentTask);
+        })
+
         newTaskElement.appendChild(deleteButton);
 
         return newTaskElement;

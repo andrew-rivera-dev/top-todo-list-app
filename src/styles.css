@@ -140,21 +140,7 @@ input {
     padding-left: 10px;
 }
 
-/* .project-edit-button {
-    display: inline;
-    position: relative;
-    right: 3px;
-    top: 1px;
-    background-color: transparent;
-    outline: none;
-    border: none;
-} */
-
-
 .project-delete-button, .task-edit-button, .task-delete-button {
-    /* position: relative;
-    left: 20px;
-    bottom: 4px; */
     background-color: transparent;
     border: none;
     outline: none;
@@ -202,7 +188,7 @@ input {
 
 .task-due-date {
     justify-self: flex-end;
-    flex: 1;
+    flex: 2;
 }
 
 .task-priority {
