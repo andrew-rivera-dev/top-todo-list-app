@@ -6,7 +6,7 @@ let projectDictionary = new Tracker();
 
 //Create new projects
 
-//--Create new project element on button click
+//Create new project element on button click
 const addProjectForm = document.getElementById('add-project-form');
 addProjectForm.addEventListener('submit', () => {
     //Validate input
@@ -28,13 +28,55 @@ addProjectForm.addEventListener('submit', () => {
 
     //Add to project list
     document.getElementById('sidebar');
-    sidebar.appendChild(newProject);
+    sidebar.appendChild(newProjectElement);
 });
+
+const allProjectsFolder = document.getElementById('all-projects-default');
+allProjectsFolder.addEventListener('click', () => {
+    clearActiveProject();
+    allProjectsFolder.classList.add('active');
+    //renderAllTasks
+})
+
+//--------------------Helper Functions--------------------//
 
 function createProjectElement(newProjectObject) {
     clearActiveProject();
     const newProjectElement = document.createElement('div');
-    //Incomplete
+    newProjectElement.classList.add('sidebar-element', 
+                                    'project-folder', 
+                                    'active');
+    newProjectElement.id = newProjectObject.id;
+    newProjectElement.innerHTML = newProjectObject.name;
+
+    newProjectElement.addEventListener('click', () => {
+        clearActiveProject();
+        newProjectElement.classList.add('active');
+        //renderProjectTasks()
+    });
+
+    const deleteButton = document.createElement('button');
+    deleteButton.type = 'button';
+    deleteButton.title = 'Delete project';
+    deleteButton.id = `deleteButton_${newProjectObject.id
+                                        .split('_')[1]}`;
+    deleteButton.classList.add('project-delete-button');
+
+    const deleteIcon = document.createElement('i');
+    deleteIcon.id = `deleteIcon_${newProjectObject.id
+                                        .split('_')[1]}`;
+    deleteIcon.classList.add('bi-x-circle-fill', 'project-delete-icon');
+    deleteButton.appendChild(deleteIcon);
+    
+    deleteButton.addEventListener('click', deleteProject, false);
+
+    newProjectElement.appendChild(deleteButton);
+
+    return newProjectElement;
+}
+
+function renderProjectTasks() {
+    const clickedProject = this;
 }
 
 function clearActiveProject() {
@@ -45,14 +87,14 @@ function clearActiveProject() {
     });
 }
 
-/*
---Validate contents
---Append it to project list
---Focus new element
---Render all tasks for that project (which will be empty)
-*/
-
-
+function deleteProject() {
+    const clickedDeleteButton = this;
+    const projectToDelete = document.getElementById(`project_${clickedDeleteButton.id
+                                                                .split('_')[1]}`);
+    projectDictionary.remove(projectToDelete.id);
+    const sidebar = document.getElementById('sidebar');
+    sidebar.removeChild(projectToDelete);
+}
 
 /*
 Maintain existing projects

@@ -130,10 +130,6 @@ input {
     background-color: #7289DA;
 }
 
-.created-sidebar-element {
-    display: flex;
-}
-
 .project-text {
     width: 100%;
     text-align: center;
@@ -177,6 +173,9 @@ input {
 }
 
 .project-delete-button {
+    position: relative;
+    left: 80px;
+    bottom: 4px;
     background-color: transparent;
     border: none;
     outline: none;
