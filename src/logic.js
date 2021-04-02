@@ -10,6 +10,10 @@ class Project {
     addTask(key, value) {
         this.tasks[key] = value;
     }
+
+    removeTask(key) {
+        delete this.tasks[key];
+    }
 }
 
 class Task {

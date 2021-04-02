@@ -5,7 +5,7 @@ let allProjects = new Project('All Projects');
 allProjects.id = 'all-projects-default';
 projectDictionary.add(allProjects.id, allProjects);
 
-function extractId(longId) {
+function extractNumericId(longId) {
     return longId.split('_')[1];
 }
 
@@ -13,8 +13,6 @@ function extractId(longId) {
 
 
 function projectManager() {
-
-    //Create new projects
     
     //Create new project element on button click
     const addProjectForm = document.getElementById('add-project-form');
@@ -61,8 +59,7 @@ function projectManager() {
         
         const newProjectText = document.createElement('div');
         newProjectText.classList.add('project-text');
-        newProjectText.id = `projectText_${newProjectObject.id
-                                            .split('_')[1]}`;
+        newProjectText.id = `projectText_${extractNumericId(newProjectObject.id)}`;
         newProjectText.innerHTML = newProjectObject.name;
     
         newProjectElement.appendChild(newProjectText);
@@ -77,13 +74,11 @@ function projectManager() {
         const deleteButton = document.createElement('button');
         deleteButton.type = 'button';
         deleteButton.title = 'Delete project';
-        deleteButton.id = `deleteButton_${newProjectObject.id
-                                            .split('_')[1]}`;
+        deleteButton.id = `projectDeleteButton_${extractNumericId(newProjectObject.id)}`;
         deleteButton.classList.add('project-delete-button');
     
         const deleteIcon = document.createElement('i');
-        deleteIcon.id = `deleteIcon_${newProjectObject.id
-                                            .split('_')[1]}`;
+        deleteIcon.id = `projectDeleteIcon_${extractNumericId(newProjectObject.id)}`;
         deleteIcon.classList.add('bi-x-circle-fill', 'project-delete-icon');
         deleteButton.appendChild(deleteIcon);
         
@@ -135,20 +130,11 @@ function projectManager() {
     
     function deleteProject() {
         const clickedDeleteButton = this;
-        const projectToDelete = document.getElementById(`project_${clickedDeleteButton.id
-                                                                    .split('_')[1]}`);
+        const projectToDelete = document.getElementById(`project_${extractNumericId(clickedDeleteButton.id)}`);
         projectDictionary.remove(projectToDelete.id);
         const sidebar = document.getElementById('sidebar');
         sidebar.removeChild(projectToDelete);
     }
-    
-    /*
-    Maintain existing projects
-    
-    --Render all tasks when All Projects folder is clicked
-    --Render all tasks for a project when clicked
-    --On project delete, reassign it's tasks to default
-    */
     
 }
 
@@ -204,16 +190,31 @@ function taskManager() {
     const closeFormButton = document.getElementById('btn-cancel');
     closeFormButton.addEventListener('click',closeForm)
 
-    
-
-    //Add to current project list
 
     //--------------------Helper Functions--------------------//
 
     function createTaskElement(taskObject) {
+        const numericId = extractNumericId(taskObject.id);
+
         const newTaskElement = document.createElement('div');
         newTaskElement.classList.add('task');
         newTaskElement.id = taskObject.id;
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.classList.add('task-checkbox', 'task-property');
+        checkbox.id = `checkbox_${numericId}`;
+
+        checkbox.addEventListener('change', function() {
+            const parentTask = document.getElementById(taskObject.id);
+            if (this.checked) {
+                parentTask.style.textDecoration = 'line-through';
+            } else {
+                parentTask.style.textDecoration = 'none';
+            }
+        })
+
+        newTaskElement.appendChild(checkbox);
 
         const title = document.createElement('span');
         title.classList.add('task-title','task-property');
@@ -243,8 +244,34 @@ function taskManager() {
             case 'Low':
                 priority.style.color = '#a7fcd9';
         }
-
+        
         newTaskElement.appendChild(priority);
+
+        const editButton = document.createElement('button');
+        editButton.type = 'button';
+        editButton.title = 'Edit task';
+        editButton.id = `taskEditButton_${numericId}`;
+        editButton.classList.add('task-edit-button');
+
+        const editIcon = document.createElement('i');
+        editIcon.id = `taskEditIcon_${numericId}`;
+        editIcon.classList.add('bi-pencil-square', 'task-edit-icon');
+
+        editButton.appendChild(editIcon);
+        newTaskElement.appendChild(editButton);
+
+        const deleteButton = document.createElement('button');
+        deleteButton.type = 'button';
+        deleteButton.title = 'Delete task';
+        deleteButton.id = `taskDeleteButton_${numericId}`;
+        deleteButton.classList.add('task-delete-button');
+
+        const deleteIcon = document.createElement('i');
+        deleteIcon.id = `taskDeleteIcon_${numericId}`;
+        deleteIcon.classList.add('bi-x-circle-fill', 'task-delete-icon');
+
+        deleteButton.appendChild(deleteIcon);
+        newTaskElement.appendChild(deleteButton);
 
         return newTaskElement;
     }
