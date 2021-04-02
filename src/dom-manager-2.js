@@ -5,6 +5,9 @@ let allProjects = new Project('All Projects');
 allProjects.id = 'all-projects-default';
 projectDictionary.add(allProjects.id, allProjects);
 
+function extractId(longId) {
+    return longId.split('_')[1];
+}
 
 //-----------------------Project Manager-----------------------//
 
@@ -36,13 +39,14 @@ function projectManager() {
         //Add to project list
         document.getElementById('sidebar');
         sidebar.appendChild(newProjectElement);
+        hideAllTasks();
     });
     
     const allProjectsFolder = document.getElementById('all-projects-default');
     allProjectsFolder.addEventListener('click', () => {
         clearActiveProject();
         allProjectsFolder.classList.add('active');
-        //renderAllTasks
+        renderAllTasks();
     })
     
     //--------------------Helper Functions--------------------//
@@ -66,7 +70,8 @@ function projectManager() {
         newProjectElement.addEventListener('click', () => {
             clearActiveProject();
             newProjectElement.classList.add('active');
-            //renderProjectTasks()
+            hideAllTasks();
+            renderProjectTasks();
         });
     
         const deleteButton = document.createElement('button');
@@ -89,8 +94,35 @@ function projectManager() {
         return newProjectElement;
     }
     
+    function renderAllTasks() {
+        const allTasks = document.getElementsByClassName('task');
+
+        for (let i = 0; i < allTasks.length; i++) {
+            allTasks[i].style.display = 'flex';
+        }
+    }
+
+    function hideAllTasks() {
+        const allTasks = document.getElementsByClassName('task');
+
+        for (let i = 0; i < allTasks.length; i++) {
+            allTasks[i].style.display = 'none';
+        }
+    }
+
     function renderProjectTasks() {
-        const clickedProject = this;
+        const clickedProject = document.getElementsByClassName('sidebar-element active')[0];
+        const projectId = clickedProject.id;
+        const projectObject = projectDictionary.getItem(projectId);
+        if (!projectObject.tasks) return;
+
+        const projectTasks = Object.values(projectObject.tasks);
+
+        for (let i = 0; i < projectTasks.length; i++) {
+            const taskId = projectTasks[i].id;
+            const taskElement = document.getElementById(taskId);
+            taskElement.style.display = 'flex';
+        }
     }
     
     function clearActiveProject() {
@@ -161,11 +193,12 @@ function taskManager() {
         projectObject.addTask(newTaskObject.id, newTaskObject)
         
         //Create task element
-        //const newTaskDiv = createNewTaskDiv(newTask);
+        const newTaskElement = createTaskElement(newTaskObject);
+        newTaskObject.element = newTaskElement;
 
-        // const main = document.getElementById('main');
-        // main.appendChild(newTaskDiv);
-        // closeForm();
+        const main = document.getElementById('main');
+        main.appendChild(newTaskObject.element);
+        closeForm();
     })
 
     const closeFormButton = document.getElementById('btn-cancel');
@@ -176,6 +209,45 @@ function taskManager() {
     //Add to current project list
 
     //--------------------Helper Functions--------------------//
+
+    function createTaskElement(taskObject) {
+        const newTaskElement = document.createElement('div');
+        newTaskElement.classList.add('task');
+        newTaskElement.id = taskObject.id;
+
+        const title = document.createElement('span');
+        title.classList.add('task-title','task-property');
+        title.innerHTML = taskObject.title;
+        newTaskElement.appendChild(title);
+
+        const description = document.createElement('span');
+        description.classList.add('task-description', 'task-property');
+        description.innerHTML = taskObject.description;
+        newTaskElement.appendChild(description);
+
+        const dueDate = document.createElement('span');
+        dueDate.classList.add('task-due-date', 'task-property');
+        dueDate.innerHTML = taskObject.dueDate;
+        newTaskElement.appendChild(dueDate);
+        
+        const priority = document.createElement('span');
+        priority.classList.add('task-priority', 'task-property');
+        priority.innerHTML = taskObject.priority;
+        switch(taskObject.priority) {
+            case 'High':
+                priority.style.color = '#eb8f8f';
+                break;
+            case 'Medium':
+                priority.style.color = '#faedb1';
+                break;
+            case 'Low':
+                priority.style.color = '#a7fcd9';
+        }
+
+        newTaskElement.appendChild(priority);
+
+        return newTaskElement;
+    }
 
     function closeForm() {
         document.getElementById('task-form').style.display = 'none';
