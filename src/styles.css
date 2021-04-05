@@ -245,7 +245,7 @@ input {
 #create-form-priority, #edit-form-priority {
   font-size: 18px;
   outline: none;
-  margin-left: 10px;
+  width: 96%;
   padding-left: 5px;
 }
 

@@ -162,8 +162,8 @@ function taskManager() {
 
     });
 
-    const submitFormButton = document.getElementById('btn-creator');
-    submitFormButton.addEventListener('click', submitForm, false);
+    const submitTaskFormButton = document.getElementById('btn-create');
+    submitTaskFormButton.addEventListener('click', submitForm, false);
     
     function submitForm() {
         const rawInputs = document.getElementsByClassName('create-form-info');
@@ -190,7 +190,7 @@ function taskManager() {
     }
 
     const closeFormButtons = document.getElementsByClassName('btn-cancel');
-    Array.from(closeFormButtons).forEach(button => button.addEventListener('click',closeForm));
+    Array.from(closeFormButtons).forEach(button => button.addEventListener('click', closeForm));
 
 
     //--------------------Helper Functions--------------------//
@@ -301,8 +301,8 @@ function taskManager() {
         return newTaskElement;
     }
 
-    function closeForm() {
-        document.getElementById('create-task-form').style.display = 'none';
+    function closeForm(mode) {
+        document.getElementById(`${mode}-task-form`).style.display = 'none';
 
         const children = document.body.children;
 

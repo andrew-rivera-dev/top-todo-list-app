@@ -215,8 +215,8 @@ function taskDomManger() {
         }
     }
 
-    const submitFormButton = document.getElementById('btn-create');
-    submitFormButton.addEventListener('click', function() {
+    const submitTaskFormButton = document.getElementById('btn-create');
+    submitTaskFormButton.addEventListener('click', function() {
         const rawInputs = document.getElementsByClassName(`${mode}-form-info`);
         const inputs = Array.from(rawInputs).map(x => x.value);
         inputs.pop();
