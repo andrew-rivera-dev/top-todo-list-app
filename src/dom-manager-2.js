@@ -18,24 +18,18 @@ function projectManager() {
     //Create new project element on button click
     const addProjectForm = document.getElementById('add-project-form');
     addProjectForm.addEventListener('submit', () => {
-        //Validate input
         const addProjectInput = document.getElementById('add-project-input');
         if (addProjectInput.value === '') return;
     
-        //Store input
         const newProjectName = addProjectInput.value;
     
-        //Reset input
         addProjectInput.value = '';
     
-        //Create new project object
         const newProjectObject = new Project(newProjectName);
         projectDictionary.add(newProjectObject.id, newProjectObject);
     
-        //Create new project element
         const newProjectElement = createProjectElement(newProjectObject);
     
-        //Add to project list
         document.getElementById('sidebar');
         sidebar.appendChild(newProjectElement);
         hideAllTasks();
@@ -136,13 +130,11 @@ function projectManager() {
         const sidebar = document.getElementById('sidebar');
         sidebar.removeChild(projectToDelete);
     }
-    
 }
 
 //-----------------------Task Manager-----------------------//
 
 function taskManager() {
-    //Add new task on button click (via form)
     const addTaskButton = document.getElementById('add-task');
 
     addTaskButton.addEventListener('click', function() {
@@ -153,39 +145,65 @@ function taskManager() {
         document.getElementById('create-form-description').value = '';
         document.getElementById('create-form-due-date').value = '';
         document.getElementById('create-form-notes').value = '';
+        blurPage('create');
+    });
 
+    function blurPage(mode) {
         const children = document.body.children;
 
         for (let i = 0; i < children.length; i++) {
-            if (children[i].id !== 'create-task-form') children[i].classList.add('blur-filter');
+            if (children[i].id !== `${mode}-task-form`) children[i].classList.add('blur-filter');
         }
+    }
 
-    });
+    function clearFocusedTasks() {
+        const tasks = document.getElementsByClassName('focused-task');
+        Array.from(tasks).forEach(task => {
+            task.classList.remove('focused-task');
+        });
+    }
 
     const submitTaskFormButton = document.getElementById('btn-create');
-    submitTaskFormButton.addEventListener('click', submitForm, false);
+    submitTaskFormButton.addEventListener('click', submitNewTaskForm, false);
     
-    function submitForm() {
+    function submitNewTaskForm() {
         const rawInputs = document.getElementsByClassName('create-form-info');
         const inputs = Array.from(rawInputs).map(x => x.value);
         
-        //Create new task object
         const currentProject = document.getElementsByClassName('sidebar-element active');
         
-        //Store data in task object
-        const dueDateSplit = inputs[2].split('-');
         const newTaskObject = new Task(inputs[0], inputs[1], inputs[2], inputs[3], currentProject[0].id, inputs[4]);
-
-        //Add task object to project object
+        
         const projectObject = projectDictionary.getItem(currentProject[0].id);
         projectObject.addTask(newTaskObject.id, newTaskObject)
         
-        //Create task element
         const newTaskElement = createTaskElement(newTaskObject);
-        newTaskObject.element = newTaskElement;
 
         const main = document.getElementById('main');
-        main.appendChild(newTaskObject.element);
+        main.appendChild(newTaskElement);
+        closeForm();
+    }
+
+    const updateTaskFormButton = document.getElementById('btn-edit');
+    updateTaskFormButton.addEventListener('click', submitUpdateTaskForm);
+
+    function submitUpdateTaskForm() {
+        const rawInputs = document.getElementsByClassName('edit-form-info');
+        const inputs = Array.from(rawInputs).map(x => x.value);
+
+        const currentProject = document.getElementsByClassName('sidebar-element active');
+
+        const newTaskObject = new Task(inputs[0], inputs[1], inputs[2], inputs[3], currentProject[0].id, inputs[4]);
+
+        const projectObject = projectDictionary.getItem(currentProject[0].id);
+        const oldTaskElement = document.getElementsByClassName('task focused-task')[0];
+        projectObject.removeTask(oldTaskElement.id);
+        projectObject.addTask(newTaskObject.id, newTaskObject);
+
+        const newTaskElement = createTaskElement(newTaskObject);
+
+        const main = document.getElementById('main');
+        main.replaceChild(newTaskElement, oldTaskElement);
         closeForm();
     }
 
@@ -272,6 +290,8 @@ function taskManager() {
             document.getElementById('edit-form-due-date').value = taskObject.dueDate;
             document.getElementById(`edit-${taskObject.priority}`).selected = true;
             document.getElementById('edit-form-notes').value = taskObject.notes;
+
+            blurPage('edit');
         })
 
         newTaskElement.appendChild(editButton);
@@ -294,15 +314,21 @@ function taskManager() {
 
             const main = document.getElementById('main');
             main.removeChild(parentTask);
-        })
+        });
 
         newTaskElement.appendChild(deleteButton);
+
+        newTaskElement.addEventListener('click', function() {
+            clearFocusedTasks();
+            newTaskElement.classList.add('focused-task')
+        });
 
         return newTaskElement;
     }
 
-    function closeForm(mode) {
-        document.getElementById(`${mode}-task-form`).style.display = 'none';
+    function closeForm() {
+        const forms = document.getElementsByClassName('task-form');
+        Array.from(forms).forEach(form => form.style.display = 'none');
 
         const children = document.body.children;
 

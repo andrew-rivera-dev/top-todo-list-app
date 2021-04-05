@@ -25,7 +25,6 @@ class Task {
         this.projectId = projectId;
         this.id = `task_${uuidv4()}`;
         this.notes = notes;
-        this.element = null;
     }
 }
 
