@@ -189,7 +189,7 @@ function taskDomManger() {
     const addTaskButton = document.getElementById('add-task');
 
     addTaskButton.addEventListener('click', function() {
-        const addTaskForm = document.getElementById('task-form');
+        const addTaskForm = document.getElementById('create-task-form');
         addTaskForm.style.display = 'block';
 
         document.getElementById('form-title').value = '';
@@ -200,13 +200,13 @@ function taskDomManger() {
         const children = document.body.children;
 
         for (let i = 0; i < children.length; i++) {
-            if (children[i].id !== 'task-form') children[i].classList.add('blur-filter');
+            if (children[i].id !== 'create-task-form') children[i].classList.add('blur-filter');
         }
 
     });
 
     function closeForm() {
-        document.getElementById('task-form').style.display = 'none';
+        document.getElementById('create-task-form').style.display = 'none';
 
         const children = document.body.children;
 

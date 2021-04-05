@@ -146,7 +146,7 @@ function taskManager() {
     const addTaskButton = document.getElementById('add-task');
 
     addTaskButton.addEventListener('click', function() {
-        const addTaskForm = document.getElementById('task-form');
+        const addTaskForm = document.getElementById('create-task-form');
         addTaskForm.style.display = 'block';
 
         document.getElementById('form-title').value = '';
@@ -157,7 +157,7 @@ function taskManager() {
         const children = document.body.children;
 
         for (let i = 0; i < children.length; i++) {
-            if (children[i].id !== 'task-form') children[i].classList.add('blur-filter');
+            if (children[i].id !== 'create-task-form') children[i].classList.add('blur-filter');
         }
 
     });
@@ -263,8 +263,8 @@ function taskManager() {
         editButton.appendChild(editIcon);
 
         editButton.addEventListener('click', function() {
-            const addTaskForm = document.getElementById('task-form');
-            const formHeader = document.getElementById('form-header');
+            const addTaskForm = document.getElementById('create-task-form');
+            const formHeader = document.getElementById('create-task-form-header');
 
             formHeader.innerHTML = 'Update task';
             addTaskForm.style.display = 'block';
@@ -273,10 +273,6 @@ function taskManager() {
             document.getElementById('form-description').value = taskObject.description;
             document.getElementById('form-due-date').value = taskObject.dueDate;
             document.getElementById('form-notes').value = taskObject.notes;
-
-            const submitFormButton = document.getElementById('btn-create');
-            submitFormButton.removeEventListener('click', submitForm, false);
-            submitFormButton.addEventListener('click', updateTask, false);
         })
 
         newTaskElement.appendChild(editButton);
@@ -307,7 +303,7 @@ function taskManager() {
     }
 
     function closeForm() {
-        document.getElementById('task-form').style.display = 'none';
+        document.getElementById('create-task-form').style.display = 'none';
 
         const children = document.body.children;
 

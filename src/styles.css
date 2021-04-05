@@ -195,7 +195,7 @@ input {
     flex: 1;
 }
 
-#task-form {
+#create-task-form {
   display: none;
   position: fixed;
   top: 50%;
@@ -212,7 +212,7 @@ input {
   background-color: #2c2f33;
 }
 
-#task-form h1 {
+#create-task-form h1 {
     font-size: 56px;
     justify-content: center;
     padding: 0px;
@@ -220,7 +220,7 @@ input {
     text-align: center;
 }
 
-#task-form input, #task-form select, #task-form textarea {
+#create-task-form input, #create-task-form select, #create-task-form textarea {
   width: 90%;
   padding: 15px;
   margin: 5px 0 22px 0;
@@ -233,7 +233,7 @@ input {
   resize: none;
  }
 
-#task-form input:focus, #task-form textarea:focus {
+#create-task-form input:focus, #create-task-form textarea:focus {
   outline: none;
 }
 
@@ -250,12 +250,12 @@ input {
   padding-left: 5px;
 }
 
-#form-button-container {
+#create-task-form-button-container {
   display: flex;
   justify-content: center;
 }
 
-#task-form .btn {
+#create-task-form .btn {
   background-color: #ddd;
   color: black;
   padding: 16px 20px;
@@ -269,7 +269,7 @@ input {
   opacity: 0.8;
 }
 
-#task-form .btn:hover, .open-button:hover {
+#create-task-form .btn:hover, .open-button:hover {
   opacity: 1;
 }
 
