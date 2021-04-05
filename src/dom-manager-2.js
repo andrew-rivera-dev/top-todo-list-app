@@ -149,10 +149,10 @@ function taskManager() {
         const addTaskForm = document.getElementById('create-task-form');
         addTaskForm.style.display = 'block';
 
-        document.getElementById('form-title').value = '';
-        document.getElementById('form-description').value = '';
-        document.getElementById('form-due-date').value = '';
-        document.getElementById('form-notes').value = '';
+        document.getElementById('create-form-title').value = '';
+        document.getElementById('create-form-description').value = '';
+        document.getElementById('create-form-due-date').value = '';
+        document.getElementById('create-form-notes').value = '';
 
         const children = document.body.children;
 
@@ -162,21 +162,19 @@ function taskManager() {
 
     });
 
-    const submitFormButton = document.getElementById('btn-create');
+    const submitFormButton = document.getElementById('btn-creator');
     submitFormButton.addEventListener('click', submitForm, false);
     
     function submitForm() {
-        const rawInputs = document.getElementsByClassName('form-info');
+        const rawInputs = document.getElementsByClassName('create-form-info');
         const inputs = Array.from(rawInputs).map(x => x.value);
-        inputs.pop();
-        if (inputs.some(x => x === '')) return;
         
         //Create new task object
         const currentProject = document.getElementsByClassName('sidebar-element active');
         
         //Store data in task object
         const dueDateSplit = inputs[2].split('-');
-        const newTaskObject = new Task(inputs[0], inputs[1], format(new Date(dueDateSplit[0], dueDateSplit[1], dueDateSplit[2]), 'MMM do'), inputs[3], currentProject[0].id, inputs[4]);
+        const newTaskObject = new Task(inputs[0], inputs[1], inputs[2], inputs[3], currentProject[0].id, inputs[4]);
 
         //Add task object to project object
         const projectObject = projectDictionary.getItem(currentProject[0].id);
@@ -191,8 +189,8 @@ function taskManager() {
         closeForm();
     }
 
-    const closeFormButton = document.getElementById('btn-cancel');
-    closeFormButton.addEventListener('click',closeForm)
+    const closeFormButtons = document.getElementsByClassName('btn-cancel');
+    Array.from(closeFormButtons).forEach(button => button.addEventListener('click',closeForm));
 
 
     //--------------------Helper Functions--------------------//
@@ -232,7 +230,9 @@ function taskManager() {
 
         const dueDate = document.createElement('span');
         dueDate.classList.add('task-due-date', 'task-property');
-        dueDate.innerHTML = taskObject.dueDate;
+        const dueDateSplit = taskObject.dueDate.split('-');
+        const cleanedDate = format(new Date(dueDateSplit[0], dueDateSplit[1], dueDateSplit[2]), 'MMM do');
+        dueDate.innerHTML = cleanedDate;
         newTaskElement.appendChild(dueDate);
         
         const priority = document.createElement('span');
@@ -263,16 +263,15 @@ function taskManager() {
         editButton.appendChild(editIcon);
 
         editButton.addEventListener('click', function() {
-            const addTaskForm = document.getElementById('create-task-form');
-            const formHeader = document.getElementById('create-task-form-header');
+            const editTaskForm = document.getElementById('edit-task-form');
 
-            formHeader.innerHTML = 'Update task';
-            addTaskForm.style.display = 'block';
+            editTaskForm.style.display = 'block';
             
-            document.getElementById('form-title').value = taskObject.title;
-            document.getElementById('form-description').value = taskObject.description;
-            document.getElementById('form-due-date').value = taskObject.dueDate;
-            document.getElementById('form-notes').value = taskObject.notes;
+            document.getElementById('edit-form-title').value = taskObject.title;
+            document.getElementById('edit-form-description').value = taskObject.description;
+            document.getElementById('edit-form-due-date').value = taskObject.dueDate;
+            document.getElementById(`edit-${taskObject.priority}`).selected = true;
+            document.getElementById('edit-form-notes').value = taskObject.notes;
         })
 
         newTaskElement.appendChild(editButton);
@@ -313,9 +312,106 @@ function taskManager() {
     }
 }
 
+function renderFormFields(mode) {
+    const fields = document.createElement('div');
+
+    const titleLabel = document.createElement('label');
+    titleLabel.htmlFor = 'title';
+    titleLabel.innerHTML = 'Title';
+    fields.appendChild(titleLabel);
+
+    const titleInput = document.createElement('input');
+    titleInput.type = 'text';
+    titleInput.classList.add(`${mode}-form-info`);
+    titleInput.id = `${mode}-form-title`;
+    titleInput.placeholder = 'Enter title';
+    titleInput.maxLength = 20;
+    titleInput.name = 'title';
+    titleInput.required = true;
+    fields.appendChild(titleInput);
+
+    const descriptionLabel = document.createElement('label');
+    descriptionLabel.htmlFor = 'description';
+    descriptionLabel.innerHTML = 'Description';
+    fields.appendChild(descriptionLabel);
+
+    const descriptionInput = document.createElement('input');
+    descriptionInput.type = 'text';
+    descriptionInput.classList.add(`${mode}-form-info`);
+    descriptionInput.id = `${mode}-form-description`;
+    descriptionInput.placeholder = 'Enter description';
+    descriptionInput.maxLength = 100;
+    descriptionInput.name = 'description';
+    descriptionInput.required = true;
+    fields.appendChild(descriptionInput);
+
+    const dueDateLabel = document.createElement('label');
+    dueDateLabel.htmlFor = 'due-date';
+    dueDateLabel.innerHTML = 'Due Date';
+    fields.appendChild(dueDateLabel);
+
+    const dueDateInput = document.createElement('input');
+    dueDateInput.type = 'date';
+    dueDateInput.classList.add(`${mode}-form-info`);
+    dueDateInput.id = `${mode}-form-due-date`;
+    dueDateInput.placeholder = 'Enter due date';
+    dueDateInput.name = 'due-date';
+    dueDateInput.required = true;
+    fields.appendChild(dueDateInput);
+
+    const priorityLabel = document.createElement('label');
+    priorityLabel.htmlFor = 'priority';
+    priorityLabel.innerHTML = 'Priority';
+    fields.appendChild(priorityLabel);
+
+    const priorityInput = document.createElement('select');
+    priorityInput.id = `${mode}-form-priority`;
+    priorityInput.classList.add(`${mode}-form-info`);
+    priorityInput.name = 'priority';
+    priorityInput.required = true;
+
+    const highOption = document.createElement('option');
+    highOption.id = `${mode}-High`;
+    highOption.value = 'High';
+    highOption.innerHTML = 'High';
+    priorityInput.appendChild(highOption);
+
+    const mediumOption = document.createElement('option');
+    mediumOption.id = `${mode}-Medium`;
+    mediumOption.value = 'Medium';
+    mediumOption.innerHTML = 'Medium';
+    priorityInput.appendChild(mediumOption);
+
+    const lowOption = document.createElement('option');
+    lowOption.id = `${mode}-Low`;
+    lowOption.value = 'Low';
+    lowOption.innerHTML = 'Low';
+    priorityInput.appendChild(lowOption);
+
+    fields.appendChild(priorityInput);
+
+    const notesLabel = document.createElement('label');
+    notesLabel.htmlFor = 'notes';
+    notesLabel.innerHTML = 'Notes';
+    fields.appendChild(notesLabel);
+
+    const notesInput = document.createElement('textarea');
+    notesInput.classList.add(`${mode}-form-info`);
+    notesInput.id = `${mode}-form-notes`;
+    notesInput.placeholder = 'Enter notes';
+    notesInput.maxLength = 250;
+    notesInput.name = 'notes';
+    fields.appendChild(notesInput);
+
+    const taskForm = document.getElementById(`${mode}-task-form`);
+    const taskFormButtons = document.getElementById(`${mode}-task-form-button-container`);
+    taskForm.insertBefore(fields, taskFormButtons);
+}
+
 
 
 export {
     projectManager,
     taskManager,
+    renderFormFields,
 }

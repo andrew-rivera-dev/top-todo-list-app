@@ -1,4 +1,6 @@
-import {projectManager, taskManager} from './dom-manager-2';
+import {projectManager, renderFormFields, taskManager} from './dom-manager-2';
 
+renderFormFields('create');
+renderFormFields('edit');
 projectManager();
 taskManager();

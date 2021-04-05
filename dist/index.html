@@ -30,31 +30,21 @@
         <div id="main" class="main"></div>
     </div>
 
-    <form id="create-task-form" class="create-task-form" onsubmit="return false">
+    <form id="create-task-form" class="task-form" onsubmit="return false">
       <h1 id="create-task-form-header">Add new task</h1>
 
-      <label for="title">Title</label>
-      <input type="text" class="form-info" id="form-title" placeholder="Enter title" maxlength = "20" name="title" required>
-
-      <label for="description">Description</label>
-      <input type="text" class="form-info" id="form-description" placeholder="Enter description" maxlength = "100" name="description" required>
-
-      <label for="due-date">Due Date</label>
-      <input type="date" class="form-info" id="form-due-date" placeholder="Enter due date" maxlength = "6" name="due-date" required>
-
-      <label for="priority">Priority</label>
-      <select id="form-priority" class="form-info" name="priority" required>
-          <option value="High">High</option>
-          <option value="Medium">Medium</option>
-          <option value="Low">Low</option>
-      </select>
-
-      <label for="notes">Notes</label>
-      <textarea class="form-info" id="form-notes" placeholder="Enter notes" maxlength = "250" name="notes"></textarea>
-
       <div id="create-task-form-button-container">
-          <input type="submit" class="btn" id="btn-create">
-          <button type="button" class="btn" id="btn-cancel">Close</button>
+          <input type="submit" class="btn" id="btn-creator">
+          <button type="button" class="btn btn-cancel" id="btn-create-cancel">Close</button>
+      </div>
+    </form>
+
+    <form id="edit-task-form" class="task-form" onsubmit="return false">
+      <h1 id="edit-task-form-header">Update task</h1>
+
+      <div id="edit-task-form-button-container">
+          <input type="submit" class="btn" id="btn-edit">
+          <button type="button" class="btn btn-cancel" id="btn-edit-cancel">Close</button>
       </div>
     </form>
 
